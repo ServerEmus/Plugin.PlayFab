@@ -4,12 +4,13 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="InterpolatedParser" Version="1.1.5" />
     <PackageReference Include="PlayFabAllSDK" Version="1.198.250328" />
-    <PackageReference Include="ServerEmus.ServerShared" Version="0.0.3-alpha" />
+    <PackageReference Include="ServerEmus.ServerShared" Version="0.0.3-alpha" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
   </ItemGroup>
 
   <ItemGroup>
