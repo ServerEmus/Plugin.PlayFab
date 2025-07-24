@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="InterpolatedParser" Version="1.1.5" />
+    <PackageReference Include="PlayFabAllSDK" Version="1.198.250328" />
+    <PackageReference Include="ServerEmus.ServerShared" Version="0.0.3-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="ModdableWebServer" />
+    <Using Include="ModdableWebServer.Attributes" />
+    <Using Include="ModdableWebServer.Helper" />
+    <Using Include="ModdableWebServer.Senders" />
+    <Using Include="PlayFab">
+      <Alias>PF</Alias>
+    </Using>
+    <Using Include="Plugin.PlayFab.Extensions" />
+    <Using Include="Plugin.PlayFab.Helpers" />
+    <Using Include="Plugin.PlayFab.Managers" />
+    <Using Include="Plugin.PlayFab.Managers.DataBaseManager">
+      <Static>True</Static>
+    </Using>
+    <Using Include="System.Text.Json" />
+  </ItemGroup>
+
+</Project>
