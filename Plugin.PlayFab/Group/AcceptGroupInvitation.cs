@@ -1,7 +1,6 @@
 ﻿using PlayFab.GroupsModels;
 using System.Text.Json;
 
-
 namespace Plugin.PlayFab;
 
 internal partial class Group
@@ -32,19 +31,23 @@ internal partial class Group
                 Error = PF.PlayFabErrorCode.EntityIsAlreadyMember,
                 ErrorMessage = "EntityIsAlreadyMember"
             });
-        if (group.Invitations.TryGetValue(request.Entity.Id, out string? role))
+
+        var invitation = group.Invitations.FirstOrDefault(x => x.Invited == request.Entity.Id);
+        if (invitation == null)
             return server.SendError(new()
             {
                 Error = PF.PlayFabErrorCode.GroupInvitationNotFound,
                 ErrorMessage = "GroupInvitationNotFound"
             });
-        if (string.IsNullOrEmpty(role) || group.Roles.ContainsKey(role))
+        string role = invitation.RoleId;
+        if (string.IsNullOrEmpty(role) || !group.Roles.ContainsKey(role))
             return server.SendError(new()
             {
                 Error = PF.PlayFabErrorCode.RoleDoesNotExist,
                 ErrorMessage = "RoleDoesNotExist"
             });
         group.MembersAndRoles.Add(request.Entity.Id, role);
+        group.Invitations.Remove(invitation);
         DBFabGroup.Update(group);
         return server.SendSuccess<EmptyResponse>();
     }

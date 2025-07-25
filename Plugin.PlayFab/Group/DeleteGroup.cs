@@ -12,7 +12,7 @@ internal partial class Group
         var request = JsonSerializer.Deserialize<DeleteGroupRequest>(server.Request.Body);
         if (server.ReturnIfNull(request))
             return true;
-        DBFabGroup.Delete(x=>x.Id == request.Group.Id);
+        GroupManager.DeleteGroup(request.Group.Id);
         return server.SendSuccess<EmptyResponse>();
     }
 }

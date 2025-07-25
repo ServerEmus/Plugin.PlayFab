@@ -1,5 +1,4 @@
 ﻿using PlayFab.GroupsModels;
-
 using Plugin.PlayFab.Models;
 
 namespace Plugin.PlayFab;
@@ -16,21 +15,13 @@ internal partial class Group
         var token = server.GetSessionInfoFromServer();
         if (server.ReturnIfNull(token))
             return true;
-        if (DBFabGroup.GetOne(x=>x.Name == request.GroupName) != null)
-        {
+        var fabGroup = GroupManager.CreateGroup(request.GroupName);
+        if (fabGroup == null)
             return server.SendError(new()
             { 
                 Error = PF.PlayFabErrorCode.GroupNameNotAvailable,
                 ErrorMessage = "GroupNameNotAvailable"
             });
-        }
-        FabGroup fabGroup = new()
-        { 
-            Id = FabId.RandomId,
-            Name = request.GroupName,
-            Roles = FabGroup.MainRoles,
-        };
-        DBFabGroup.Create(fabGroup);
         return server.SendSuccess<CreateGroupResponse>(new()
         { 
             AdminRoleId = fabGroup.AdminId,

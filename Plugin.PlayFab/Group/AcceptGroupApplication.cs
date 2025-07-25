@@ -1,6 +1,5 @@
 ﻿using PlayFab.GroupsModels;
 
-
 namespace Plugin.PlayFab;
 
 internal partial class Group

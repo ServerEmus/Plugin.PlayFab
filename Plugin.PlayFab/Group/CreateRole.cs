@@ -1,6 +1,5 @@
 ﻿using PlayFab.GroupsModels;
 
-
 namespace Plugin.PlayFab;
 
 internal partial class Group
@@ -12,34 +11,19 @@ internal partial class Group
         var request = JsonSerializer.Deserialize<CreateGroupRoleRequest>(server.Request.Body);
         if (server.ReturnIfNull(request))
             return true;
-        var group = DBFabGroup.GetOne(x => x.Name == request.Group.Id);
-        if (group == null)
+        var ret = GroupManager.CreateRole(request.Group.Id, request.RoleId, request.RoleName);
+        if (ret == 1)
             return server.SendError(new()
             {
                 Error = PF.PlayFabErrorCode.RoleNameNotAvailable,
                 ErrorMessage = "RoleNameNotAvailable"
             });
-        if (group.Roles.ContainsKey(request.RoleId))
+        if (ret == 2)
             return server.SendError(new()
             {
                 Error = PF.PlayFabErrorCode.DuplicateRoleId,
                 ErrorMessage = "DuplicateRoleId"
             });
-        if (group.Roles.ContainsValue(request.RoleName))
-            return server.SendError(new()
-            {
-                Error = PF.PlayFabErrorCode.RoleNameNotAvailable,
-                ErrorMessage = "RoleNameNotAvailable"
-            });
-        if (request.RoleName.Length is <1 or >100)
-            return server.SendError(new()
-            {
-                Error = PF.PlayFabErrorCode.RoleNameNotAvailable,
-                ErrorMessage = "RoleNameNotAvailable"
-            });
-        // TODO: Additional checks.
-        group.Roles.Add(request.RoleId, request.RoleName);
-        DBFabGroup.Update(group);
         return server.SendSuccess<CreateGroupRoleResponse>(new()
         {
             ProfileVersion = 0,

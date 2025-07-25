@@ -1,6 +1,5 @@
 ﻿using PlayFab.GroupsModels;
 
-
 namespace Plugin.PlayFab;
 
 internal partial class Group
@@ -12,22 +11,12 @@ internal partial class Group
         var request = JsonSerializer.Deserialize<AddMembersRequest>(server.Request.Body);
         if (server.ReturnIfNull(request))
             return true;
-        var group = DBFabGroup.GetOne(x => x.Name == request.Group.Id);
-        if (group == null)
+        if (group == GroupManager.AddMembers(request.Group.Id, request.Members.Select(x=>(FabId)x), request.RoleId))
             return server.SendError(new()
             {
                 Error = PF.PlayFabErrorCode.RoleDoesNotExist,
                 ErrorMessage = "RoleDoesNotExist"
             });
-        if (!group.Roles.ContainsKey(request.RoleId))
-            return server.SendError(new()
-            {
-                Error = PF.PlayFabErrorCode.RoleDoesNotExist,
-                ErrorMessage = "RoleDoesNotExist"
-            });
-        foreach (var item in request.Members)
-            group.MembersAndRoles.Add(item.Id, request.RoleId);
-        DBFabGroup.Update(group);
         return server.SendSuccess<EmptyResponse>();
     }
 }
