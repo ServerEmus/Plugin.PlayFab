@@ -46,7 +46,7 @@ internal static class GroupManager
         var group = DBFabGroup.GetOne(x => x.Id == groupId);
         if (group == null)
             return false;
-        group.Blocked.Add(enityIdId);
+        group.Blocked.Add(enityId);
         DBFabGroup.Update(group);
         return true;
     }
@@ -59,21 +59,16 @@ internal static class GroupManager
 
     public static FabGroup? CreateGroup(string name)
     {
-        if (DBFabGroup.GetOne(x=>x.Name == request.GroupName) != null)
-        {
-            return server.SendError(new()
-            { 
-                Error = PF.PlayFabErrorCode.GroupNameNotAvailable,
-                ErrorMessage = "GroupNameNotAvailable"
-            });
-        }
+        if (DBFabGroup.GetOne(x=>x.Name == name) != null)
+            return null;
         FabGroup fabGroup = new()
         { 
             Id = FabId.RandomId,
-            Name = request.GroupName,
+            Name = name,
             Roles = FabGroup.MainRoles,
         };
         DBFabGroup.Create(fabGroup);
+        return fabGroup;
     }
 
     public static int CreateRole(FabId groupId, string roleId, string RoleName)
@@ -88,7 +83,7 @@ internal static class GroupManager
         if (RoleName.Length is <1 or >100)
             return 1;
         // TODO more checks.
-        group.Roles.Add(RoleId, RoleName);
+        group.Roles.Add(roleId, RoleName);
         DBFabGroup.Update(group);
         return 0;
     }
