@@ -11,7 +11,7 @@ internal partial class Group
         var request = JsonSerializer.Deserialize<ChangeMemberRoleRequest>(server.Request.Body);
         if (server.ReturnIfNull(request))
             return true;
-        if (!GroupManager.TryGetGroup(request.Group.Id, out var group))
+        if (!GroupManager.TryGetGroup(request.Group.Id, out var group) || group == null)
             return server.SendError(new()
             {
                 Error = PF.PlayFabErrorCode.RoleNameNotAvailable,
