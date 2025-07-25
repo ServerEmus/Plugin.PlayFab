@@ -100,8 +100,6 @@ internal static class GroupManager
             return 1;
         if (!group.Roles.ContainsKey(roleId))
             return 1;
-        if (group.Roles.ContainsValue(RoleName))
-            return 1;
         group.Roles.Remove(roleId);
         for (int i = 0; i < group.MembersAndRoles.Count; i++)
         {
@@ -132,12 +130,12 @@ internal static class GroupManager
             return 4;
         }
         time = DateTime.UtcNow.AddDays(7);
-        group.Applications.Add(id, time);
+        group.Applications.Add(userId, time);
         DBFabGroup.Update(group);
         return 0;
     }
 
-    public static bool TryGetValidInvitation(FabId groupId, FabId userId, FabGroup.Invitiation? invitation)
+    public static bool TryGetValidInvitation(FabId groupId, FabId userId, out FabGroup.Invitiation? invitation)
     {
         invitation = null;
         var group = DBFabGroup.GetOne(x => x.Id == groupId);
@@ -149,7 +147,7 @@ internal static class GroupManager
         return invitation.Exp < DateTime.UtcNow;
     }
 
-    public static bool TryGetInvitation(FabId groupId, FabId userId, FabGroup.Invitiation? invitation)
+    public static bool TryGetInvitation(FabId groupId, FabId userId, out FabGroup.Invitiation? invitation)
     {
         invitation = null;
         var group = DBFabGroup.GetOne(x => x.Id == groupId);
