@@ -43,7 +43,7 @@ internal partial class Group
             {
                 Key = new()
                 {
-                    Id = id,
+                    Id = request.Entity.Id,
                     Type = "title_player_account"
                 },
                 Lineage = [],

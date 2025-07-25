@@ -17,13 +17,16 @@ internal partial class Group
             return true;
         var inviter = sessionInfo.Value.TitleAccountId;
         // need to get the user here.
-        var group = DBFabGroup.GetOne(x => x.Name == request.Group.Id);
-        if (group == null)
-            return server.SendError(new()
+
+        return server.SendError(new()
             {
                 Error = PF.PlayFabErrorCode.EntityBlockedByGroup,
                 ErrorMessage = "EntityBlockedByGroup"
             });
+        /*
+        var group = DBFabGroup.GetOne(x => x.Name == request.Group.Id);
+        if (group == null)
+            
         var roleid = string.IsNullOrEmpty(request.RoleId) ? group.MemberId : request.RoleId;
         var id = request.Entity.Id;
         DateTime time = DateTime.UtcNow;
@@ -31,7 +34,7 @@ internal partial class Group
         {
             group.MembersAndRoles.Add(id, roleid);
             group.Applications.Remove(id);
-            group.Invitations.Remove(id);
+            //group.Invitations.Remove(id);
             DBFabGroup.Update(group);
             return server.SendError(new()
             {
@@ -66,6 +69,6 @@ internal partial class Group
                 },
                 Lineage = []
             }
-        });
+        });*/
     }
 }

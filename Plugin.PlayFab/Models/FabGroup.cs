@@ -32,7 +32,7 @@ public class FabGroup
     {
         public FabId Inviter { get; set; }
         public FabId Invited { get; set; }
-        public string RoleId { get; set; }
+        public string RoleId { get; set; } = "admins";
         public DateTime Exp { get; set; }
     }
 }

@@ -19,7 +19,7 @@ internal partial class Group
                 Error = PF.PlayFabErrorCode.RoleIsGroupDefaultMember,
                 ErrorMessage = "RoleIsGroupDefaultMember"
             });
-        var ret = DBFabGroup.DeleteRole(request.Group.Id, request.RoleId);
+        var ret = GroupManager.DeleteRole(request.Group.Id, request.RoleId);
         if (ret == 1)
             return server.SendError(new()
             {
