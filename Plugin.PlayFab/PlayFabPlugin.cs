@@ -1,29 +1,29 @@
-﻿using ServerShared.Controllers;
-using ServerShared.Interfaces;
+﻿using ModdableWebServer.Interfaces;
+using ServerShared.Controllers;
+using ServerShared.Plugins;
 using System.Reflection;
 
 namespace Plugin.PlayFab;
 
-public class PlayFabPlugin : IPlugin
+public class PlayFabPlugin : ServerPlugin
 {
-    public uint Priority => 0;
+    public override uint Priority => 0;
 
-    public string Name => "PlayFab";
+    public override string Name => "PlayFab";
 
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-    }
-
-    public void Initialize()
+    public override void Start()
     {
         var server = ServerController.Servers.FirstOrDefault(static x => x.Port == 443);
         if (server == null)
             return;
-        server.Server!.HTTPAttributeToMethods.Merge(Assembly.GetAssembly(typeof(PlayFabPlugin)));
+
+        if (server.Server is not IHttpServer http)
+            return;
+
+        http.HTTPAttributeToMethods.Merge(Assembly.GetAssembly(typeof(PlayFabPlugin)));
     }
 
-    public void ShutDown()
+    public override void Stop()
     {
         
     }
