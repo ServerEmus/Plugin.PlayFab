@@ -1,6 +1,8 @@
 # Plugin.PlayFab
-
 Plugin to run a PlayFab Server
+
+# NOT WORKING IT IS AN EXPERIMENT
+# DO NOT EXPECT TO WORK
 
 ## Installing this plugin.
 
